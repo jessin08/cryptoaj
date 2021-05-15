@@ -85,7 +85,7 @@ def getCoinOfDay(update, context):
     try:
         response = session.get(lunarurl, params=params)
         data = json.loads(response.text)
-        update.message.reply_text("Coin of the day is " + json.dumps(data['data']))
+        update.message.reply_text("Coin of the day is " + json.dumps(data['data']['symbol'])+':'+ json.dumps(data['data']['name']))
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         update.message.reply_text("Error getting info!!!")
         print(e)
