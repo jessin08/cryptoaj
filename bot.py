@@ -85,8 +85,7 @@ def getCoinOfDay(update, context):
     try:
         response = session.get(lunarurl, params=params)
         data = json.loads(response.text)
-        print(data)
-        update.message.reply_text("Coin of the day is " + json.dumps(data))
+        update.message.reply_text("Coin of the day is " + json.dumps(data.data.symbol))
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
     
@@ -95,7 +94,6 @@ def getPrice(update, context):
     try:
         response = session.get(url, params=parameters)
         data = json.loads(response.text)
-        print(data)
         update.message.reply_text("Price is " + json.dumps(data))
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
