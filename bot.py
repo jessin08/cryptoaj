@@ -87,6 +87,7 @@ def getCoinOfDay(update, context):
         data = json.loads(response.text)
         update.message.reply_text("Coin of the day is " + json.dumps(data.data.symbol))
     except (ConnectionError, Timeout, TooManyRedirects) as e:
+        update.message.reply_text("Error getting info!!!"))
         print(e)
     
 def getPrice(update, context):
