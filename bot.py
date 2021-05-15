@@ -34,6 +34,7 @@ TELEGRAM_TOKEN = "1785720465:AAEkVuQy89a20UJTqD2LgcFXgQoip902ZTI"
 
 # CoinMarketCap
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+lunarurl = 'https://api.lunarcrush.com/v2?'
 parameters = {
   'start':'1',
   'limit':'5000',
@@ -75,6 +76,19 @@ def echo(update, context):
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
+    
+def getCoinOfDay(update, context):
+    params = {
+        'data': 'coinoftheday',
+        'key': '4mu863tc1wqgojnbiovi7w'
+    }
+    try:
+        response = session.get(lunarurl, params=params)
+        data = json.loads(response.text)
+        print(data)
+        update.message.reply_text("Coin of the day is " + json.dumps(data))
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        print(e)
     
 def getPrice(update, context):
     update.message.reply_text("Just a moment, please...")
@@ -118,6 +132,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("cprice", getPrice))
     dp.add_handler(CommandHandler("listings", getListings))
+    dp.add_handler(CommandHandler("coinofday", getCoinOfDay))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
